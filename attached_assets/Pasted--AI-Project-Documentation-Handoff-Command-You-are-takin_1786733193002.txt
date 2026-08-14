@@ -1,0 +1,419 @@
+# AI Project Documentation & Handoff Command
+
+You are taking over an existing software project that may have been worked on by other employees and AI agents.
+
+Your job is to **inspect the actual repository, understand its current state, and maintain four project documents as accurate sources of context for the next employee/AI agent**:
+
+* `README.md`
+* `PROJECT_STATUS.md`
+* `ARCHITECTURE.md`
+* `TASKS.md`
+
+## 1. First: Inspect Before Changing Anything
+
+Do NOT assume the existing documentation is correct.
+
+First inspect the repository thoroughly enough to understand:
+
+* What the project does
+* The current technology stack
+* The application structure
+* Frontend and backend architecture
+* Database structure and integrations
+* Authentication and authorization
+* APIs and external services
+* Important configuration
+* Existing features
+* Partially implemented features
+* Known bugs and technical debt
+* Tests and their current state
+* Recent Git history and changes
+* What appears to have been completed by previous employees/agents
+* What is currently being worked on
+* What remains to be built
+
+Read the existing:
+
+* `README.md`
+* `PROJECT_STATUS.md`
+* `ARCHITECTURE.md`
+* `TASKS.md`
+
+Then compare those documents against the actual code.
+
+**The code is the source of truth.**
+
+If the documentation conflicts with the code, correct the documentation.
+
+Do not blindly preserve incorrect information.
+
+---
+
+## 2. Update README.md
+
+Update `README.md` so that a completely new developer can understand the project.
+
+It should accurately contain, where applicable:
+
+### Project Overview
+
+* What the product is
+* What problem it solves
+* Who it is for
+* Current state of the product
+
+### Technology Stack
+
+List the technologies actually used.
+
+For example:
+
+* Frontend framework
+* Backend framework
+* Programming language
+* Database
+* Authentication
+* APIs
+* Hosting/deployment
+* Payment provider
+* Storage
+* Other important services
+
+Do not list technologies merely because they appear in old documentation. Verify that they are actually being used.
+
+### Project Structure
+
+Explain the important directories and files.
+
+### Setup
+
+Explain how a new developer/AI agent should:
+
+* Install dependencies
+* Configure environment variables
+* Run the project
+* Run tests
+* Run development servers
+* Build the project
+* Deploy it, if applicable
+
+Never expose secrets, API keys, passwords, tokens, or private credentials.
+
+### Current Features
+
+List the features that actually exist and work.
+
+Clearly distinguish between:
+
+* Completed
+* Partially implemented
+* Planned
+
+---
+
+## 3. Update PROJECT_STATUS.md
+
+This file is the most important handoff document.
+
+Rewrite it based on the CURRENT state of the repository.
+
+Use this structure:
+
+# Project Status
+
+## Last Audited
+
+Include the date of this audit.
+
+## Overall Status
+
+Give a concise description of the current state of the project.
+
+Example:
+
+> MVP is functional. Authentication and billing are implemented. Team management is partially complete. The main remaining work is permissions and invitation handling.
+
+## Completed
+
+List functionality that is actually implemented.
+
+For each important feature, briefly describe what exists.
+
+## In Progress
+
+List functionality that is partially implemented.
+
+For each item explain:
+
+* What already works
+* What remains
+* Relevant files/components
+* Important limitations
+
+## Known Bugs
+
+List confirmed bugs discovered from the repository or tests.
+
+Do NOT invent bugs.
+
+## Known Technical Debt
+
+List important technical debt that should eventually be addressed.
+
+## Recent Changes
+
+Summarize the significant work that appears to have been completed recently.
+
+Use Git history when useful.
+
+## Current Priority
+
+Identify what should be worked on next.
+
+## Recommended Next Step
+
+Give the next AI/developer a clear starting point.
+
+## Important Notes for the Next Agent
+
+Include anything the next employee/AI needs to know to avoid breaking existing functionality.
+
+---
+
+## 4. Update ARCHITECTURE.md
+
+Document the architecture that actually exists.
+
+Include, where applicable:
+
+# Architecture
+
+## Overview
+
+Explain how the major parts of the application interact.
+
+## Frontend
+
+Explain:
+
+* Framework
+* Main application structure
+* Routing
+* State management
+* Important components
+* Important UI patterns
+
+## Backend
+
+Explain:
+
+* Backend framework/runtime
+* API structure
+* Services
+* Business logic
+* Authentication
+* Authorization
+
+## Database
+
+Explain:
+
+* Database technology
+* Important tables/collections
+* Relationships
+* Important constraints
+* Data access patterns
+
+Never include credentials.
+
+## External Services
+
+Document integrations such as:
+
+* Payments
+* Email
+* Storage
+* AI
+* Analytics
+* Authentication providers
+* Third-party APIs
+
+Explain what each integration is used for.
+
+## Data Flow
+
+Explain important flows through the system.
+
+For example:
+
+User → Frontend → API → Database → External Service
+
+## Authentication & Authorization
+
+Explain how users authenticate and how permissions are enforced.
+
+## Deployment
+
+Explain the current deployment architecture if it can be determined from the repository.
+
+## Important Architectural Decisions
+
+Document decisions that future developers should understand before changing the architecture.
+
+## Potential Architectural Problems
+
+Document genuine architectural weaknesses or risks discovered during the audit.
+
+Do not invent problems.
+
+---
+
+## 5. Update TASKS.md
+
+This is the actionable roadmap.
+
+Organize tasks into:
+
+# Tasks
+
+## 🔴 Critical
+
+Things that should be fixed or completed urgently.
+
+## 🟠 High Priority
+
+Important work required soon.
+
+## 🟡 Medium Priority
+
+Useful improvements and remaining product work.
+
+## 🟢 Low Priority
+
+Nice-to-have improvements.
+
+## 🔵 Future
+
+Ideas or functionality that should not currently be prioritized.
+
+For every task:
+
+* Make it specific
+* Make it actionable
+* Avoid vague descriptions
+* Do not create duplicate tasks
+* Remove tasks that are already completed
+* Update existing tasks when their status has changed
+
+Where useful, include:
+
+* Relevant files
+* Dependencies
+* Technical considerations
+* Acceptance criteria
+
+Do NOT turn every tiny implementation detail into a task.
+
+---
+
+# 6. Verify the Documentation
+
+After updating all four files, perform a second verification.
+
+Check:
+
+### README.md
+
+Does it describe what actually exists?
+
+### PROJECT_STATUS.md
+
+Does it accurately describe the current state?
+
+### ARCHITECTURE.md
+
+Does it match the actual implementation?
+
+### TASKS.md
+
+Are completed tasks removed/marked appropriately and remaining tasks accurate?
+
+Look for contradictions between the four documents.
+
+Fix contradictions.
+
+---
+
+# 7. Important Rules
+
+Follow these rules every time you run this command:
+
+1. **The repository code is the source of truth.**
+2. Never invent features.
+3. Never claim something is completed unless the implementation supports it.
+4. Never claim something is tested unless you actually have evidence.
+5. Never expose secrets or credentials.
+6. Do not delete working functionality just to simplify the documentation.
+7. Do not make unnecessary code changes during this documentation audit.
+8. Do not create duplicate tasks.
+9. Remove or update outdated information.
+10. Preserve useful historical context when it helps future developers.
+11. Keep documentation concise enough that an AI agent can efficiently read it.
+12. Prefer facts over assumptions.
+13. If something cannot be determined, explicitly say that it could not be verified.
+14. Use the actual filenames, directories, components, functions, and services found in the repository.
+15. Check Git history when it helps determine recent work.
+16. Do not treat old documentation as proof that functionality exists.
+17. Do not modify application code unless I explicitly ask you to.
+18. Your goal is to make the repository understandable to a completely new employee and AI agent.
+
+---
+
+# 8. Final Handoff Report
+
+After updating the four documents, give me a short report containing:
+
+### Current State
+
+What is the project currently capable of?
+
+### What Was Found
+
+What important things did you discover during the audit?
+
+### Documentation Updated
+
+Confirm which of these were updated:
+
+* `README.md`
+* `PROJECT_STATUS.md`
+* `ARCHITECTURE.md`
+* `TASKS.md`
+
+### Recommended Next Task
+
+Tell me the single most useful task the next employee/AI should start with.
+
+### Warnings
+
+Mention anything the next employee/AI should be particularly careful about.
+
+Do not make assumptions about what the next employee should build. Base the recommendation on the actual repository state.
+
+---
+
+## Final Requirement
+
+The next employee/AI agent should be able to enter the repository, read these four files, inspect the relevant code, and immediately understand:
+
+**What is this?**
+
+**What has already been built?**
+
+**What is currently incomplete?**
+
+**How does it work?**
+
+**What should I work on next?**
+
+Maintain the four files so that they remain accurate after every run.
