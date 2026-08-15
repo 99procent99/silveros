@@ -2,16 +2,15 @@
 
 ## 🔴 Critical
 
-### Confirm the telephony connection model
+### Confirm the browser can reach the PJSIP WebSocket endpoint
 
-- Identify the Asterisk/FreePBX version and hosting/network reachability.
-- Confirm whether ARI, AMI, SIP/WebRTC, or a provider API is available.
-- Decide whether browser agents use a softphone/WebRTC client, desk phones, or server-side
-  bridging.
-- Acceptance criteria: a written connection matrix and a safe local/preview test path without
-  exposing credentials.
+- Verify the user's secure WebSocket URL, PJSIP transport, SIP domain, extension credentials,
+  dialplan format, and NAT/ICE settings from the Replit preview.
+- Use the existing Integrations form and Agent Console registration flow.
+- Acceptance criteria: registration succeeds, microphone permission is granted, and a controlled
+  outbound test call has two-way audio.
 
-### Add authentication and authorization before live call control
+### Add authentication and authorization before production call control
 
 - Add an identity boundary and role checks for administrators, supervisors, and agents.
 - Define which users may configure providers, originate calls, control active calls, and export
@@ -21,11 +20,12 @@
 
 ## 🟠 High Priority
 
-### Create a provider-neutral telephony adapter
+### Move the browser SIP adapter behind a production boundary
 
-- Add a server-only adapter interface for health, agent presence, originate, answer, hangup,
-  hold/resume, transfer, and normalized events.
-- Implement the first adapter only after the connection model is confirmed.
+- Keep the current SIP.js adapter for preview testing, but add authenticated server-side provider
+  configuration and a provider-neutral telephony service for production.
+- Add server-side health, agent presence, originate, answer, hangup, hold/resume, transfer, and
+  normalized event operations.
 - Keep credentials in Replit environment secrets and redact them from errors/logs.
 - Acceptance criteria: an adapter health check reports honest connected/disconnected state and
   provider failures are not reported as successful calls.
@@ -42,7 +42,8 @@
 
 - Add a server event path (webhook, polling, or provider event stream as appropriate) and
   normalize ringing, answered, completed, failed, held, transferred, and disconnected states.
-- Replace static agent/call values in the Call Center routes with server-backed queries.
+- Replace static agent/call values in the Call Center routes with server-backed queries. The
+  current Agent Console only handles browser-side outbound calls.
 - Acceptance criteria: UI state changes only after an adapter-confirmed event.
 
 ## 🟡 Medium Priority

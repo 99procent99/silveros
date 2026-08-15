@@ -7,9 +7,10 @@
 ## Overall Status
 
 The imported project is a working frontend MVP for the Silver Operations dashboard. The Replit
-preview is configured and running, and the production build succeeds. The application currently
-uses static demo data only; the backend, persistence, authentication, and telephony integration
-needed to make real SilverCall Center calls have not been implemented.
+preview is configured and running, and the production build and TypeScript checks succeed. A
+browser-side SIP.js adapter now supports PJSIP registration and outbound WebRTC calls when the
+user supplies a compatible secure WebSocket endpoint. Persistence, authentication, and a
+server-side backend are not implemented.
 
 ## Completed
 
@@ -21,22 +22,26 @@ needed to make real SilverCall Center calls have not been implemented.
   functions.
 - Replit `Start application` workflow on port 5000.
 - Dependency installation and successful `bun run build` verification.
+- PJSIP-over-WebRTC provider form in `src/routes/admin.integrations.tsx`.
+- Browser SIP registration, outbound dialing, DTMF, mute, hangup, and remote audio in
+  `src/routes/call.agents.tsx` and `src/lib/sip-client.ts`.
 
 ## In Progress
 
-### Real SilverCall Center backend
+### Production SilverCall Center backend
 
-The UI already defines the intended surfaces for call overview, campaigns, hopper/auto-dial,
-agent presence, call control, and history. They are backed by `src/lib/mock-data.ts` and show
-disabled controls when telephony is disconnected.
+The Agent Console now has a browser-side PJSIP/WebRTC path for preview testing. It uses SIP.js
+directly from the browser, and provider settings are kept in session storage so the browser can
+authenticate to the PBX.
 
 Remaining work:
 
-- Confirm the user's Asterisk/FreePBX/provider topology and preferred control interface (ARI,
-  AMI, SIP/WebRTC, or a provider API).
-- Choose and configure persistence, authentication, authorization, and server-side secrets.
-- Define a provider-neutral telephony adapter contract.
-- Implement call initiation, event handling, presence, queues, dispositions, and audit records.
+- Confirm the user's PBX WSS endpoint, PJSIP WebSocket transport, ICE/NAT policy, dialplan, and
+  browser microphone requirements.
+- Move provider credentials behind authentication and server-side secret handling before
+  production use.
+- Add persistence, inbound call handling, call events, dispositions, hold/transfer, and audit
+  records.
 - Replace the relevant mock-data reads with authenticated server calls.
 
 ## Known Bugs
@@ -49,7 +54,7 @@ were verified on 2026-08-14.
 - Demo data is embedded in one static module rather than loaded from an API/database.
 - There are no automated tests covering routes, server functions, or telephony behavior.
 - There is no authentication or authorization boundary yet.
-- Provider configuration and connection health are presentation-only.
+- Browser SIP settings are session-scoped and not a production credential boundary.
 - Vite reports that `vite-tsconfig-paths` is detected even though newer Vite versions support
   tsconfig paths natively; this is a warning, not a confirmed failure.
 
@@ -62,14 +67,15 @@ were verified on 2026-08-14.
 
 ## Current Priority
 
-Build the smallest secure backend foundation for SilverCall Center, beginning with the telephony
-connection contract and an explicit choice of Asterisk/FreePBX/provider interface.
+Test the browser SIP path against the user's PJSIP WebSocket endpoint, then add the authentication
+and server-side persistence boundary before using it beyond preview.
 
 ## Recommended Next Step
 
-Collect the telephony connection details (Asterisk/FreePBX version, whether it is reachable from
-the deployed app, ARI/AMI/SIP/provider API availability, and desired browser-agent model), then
-implement a server-only adapter health check before adding any call-control actions.
+Collect the PBX WSS URL, SIP domain, extension credentials, dialplan destination format, and
+whether the PBX is behind NAT. Enter them in Integrations, register from Agent Console, grant
+microphone permission, and make a controlled test call. Do not use browser session storage as a
+production secret store.
 
 ## Important Notes for the Next Agent
 

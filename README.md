@@ -7,10 +7,10 @@ are intentionally shown as disconnected instead of pretending to have succeeded.
 
 ## Current state
 
-The dashboard runs in Replit and builds successfully. SilverCall Center screens exist for
-overview, campaigns, hopper/auto-dial, agent console, and call history, but there is currently
-no API, database, authentication, or telephony adapter. Asterisk/FreePBX/provider connectivity
-is the next major product task.
+The dashboard runs in Replit and builds successfully. SilverCall Center now includes a browser
+SIP.js adapter for PJSIP over secure WebSocket/WebRTC, a provider form, registration controls,
+and a number pad. It is suitable for preview testing with a user's own PBX, but still has no
+database, authentication, or server-side call history.
 
 See [`PROJECT_STATUS.md`](PROJECT_STATUS.md), [`ARCHITECTURE.md`](ARCHITECTURE.md), and
 [`TASKS.md`](TASKS.md) for the current handoff and roadmap.
@@ -80,13 +80,15 @@ credentials to source control; the future backend should use server-side environ
 
 ### Partial or demo-only
 
-- All metrics, leads, calls, agents, integrations, and audit records are static mock data
+- Most metrics, leads, calls, agents, integrations, and audit records are static mock data
 - Buttons and provider actions are disabled or explanatory until a real adapter is connected
+- PJSIP/WebRTC credentials are kept in browser session storage for preview use; this is not a
+  production credential boundary
 - Server entry exists for SSR, but no application API or persistence exists
 
 ### Planned
 
-- A secure backend and database
-- Telephony adapter for the user's Asterisk/FreePBX/provider setup
-- Agent presence, call control, call events, recordings, dispositions, and campaign dialing
+- Server-side authentication, authorization, and database
+- Secure persistence for telephony provider settings and call history
+- Call events, recordings, dispositions, hold/transfer, inbound calls, and campaign dialing
 - Authentication, authorization, audit persistence, and provider configuration

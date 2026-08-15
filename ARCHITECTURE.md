@@ -6,8 +6,9 @@ The repository currently contains a single TanStack Start web application. It re
 operations shell around file-based routes. Most route components read static records from
 `src/lib/mock-data.ts` and use shared components from `src/components/ops`.
 
-There is no application backend service, database, authentication system, or external provider
-connection yet. `src/server.ts` is the TanStack Start SSR entry wrapper, not a domain API.
+There is no application backend service, database, or authentication system yet. A browser-side
+SIP.js adapter provides preview telephony connectivity, while `src/server.ts` remains the
+TanStack Start SSR entry wrapper rather than a domain API.
 
 ## Frontend
 
@@ -31,8 +32,9 @@ No domain backend is implemented. TanStack Start provides the server runtime and
 - `src/server.ts` delegates requests to the TanStack Start server entry and normalizes catastrophic
   SSR errors.
 
-There are no REST endpoints, server functions, jobs, webhooks, WebSocket/SSE event stream,
-telephony service, or persisted business logic in the repository.
+There are no REST endpoints, server functions, jobs, webhooks, WebSocket/SSE event stream, or
+persisted business logic in the repository. `src/lib/sip-client.ts` is a browser-side SIP.js
+adapter, not a server-side telephony service.
 
 ## Database
 
@@ -41,15 +43,22 @@ All visible records are static values in `src/lib/mock-data.ts`.
 
 ## External Services
 
-No external service is configured. The UI names intended future integrations:
+The current browser integration supports a user-supplied PJSIP provider:
+
+- PJSIP over secure WebSocket for SIP signaling
+- WebRTC for browser microphone, speaker, and media negotiation
+- SIP.js for registration, outbound calls, DTMF, mute, and hangup
+
+The UI also names intended future integrations:
 
 - Asterisk/FreePBX/provider telephony for calls and agent presence
 - SMTP/API mail provider
 - DNS/hosting provider
 - Lead intake API
 
-These are currently represented as disconnected or demo states only. No credentials are present
-or required by the current UI.
+The PJSIP settings are stored in browser session storage for preview use. They are not protected
+by application authentication and must be moved to server-side secret handling before production.
+The other integrations remain disconnected/demo states.
 
 ## Data Flow
 
@@ -64,7 +73,18 @@ Browser request
   -> rendered operations UI
 ```
 
-Planned call flow:
+Current browser call flow:
+
+```text
+Agent browser
+  -> Integrations form
+  -> browser session storage
+  -> SIP.js UserAgent
+  -> PJSIP secure WebSocket transport
+  -> Asterisk/FreePBX dialplan and WebRTC media
+```
+
+Planned server-backed call flow:
 
 ```text
 Agent browser
@@ -95,8 +115,8 @@ runtime services for a future backend have not been configured.
 - Preserve TanStack Start and its file-based routing; the imported project does not need a
   framework migration.
 - Keep provider states honest: disconnected/demo actions must not be rendered as successful.
-- Keep external credentials server-side and normalize provider-specific behavior behind an
-  adapter rather than coupling route components directly to Asterisk or a vendor.
+- Keep external credentials server-side for production and normalize provider-specific behavior
+  behind an adapter rather than coupling route components directly to Asterisk or a vendor.
 - Treat `src/routeTree.gen.ts` as generated output.
 
 ## Potential Architectural Problems
